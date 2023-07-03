@@ -16,25 +16,25 @@
       <tr th:if="${games.empty}">
         <td colspan="2"> No Items Available</td>
       </tr>
-<!--      <tr class ="table-row-items" th:each="game : ${games}">-->
-<!--        <td>-->
-<!--          <div class="card" style="width: 18rem;">-->
-<!--            <img class="card-img-top" th:src="@{/img/{id}.jpg(id=${game.getCoverImage().getId()})}"-->
-<!--                 alt="Card image cap">-->
-<!--            <div class="card-body">-->
-<!--              <h5 class="card-title" th:text="${game.title}"></h5>-->
-<!--&lt;!&ndash;              <p class="card-text">Author: <span th:text="${game.author}"></span></p>&ndash;&gt;-->
-<!--              <p class="card-text">Description: <span th:text="${game.description}"></span></p>-->
-<!--              <p class="card-text">Price: <span th:text="${game.price}"></span>$</p>-->
-<!--            </div>-->
+      <tr class ="table-row-items" th:each="game : ${games}">
+        <td>
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" th:src="@{/img/{id}.jpg(id=${game.getFileCover().getId()})}"
+                 alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title" th:text="${game.getTitle()}"></h5>
+
+              <p class="card-text">Description: <span th:text="${game.getDescription()}"></span></p>
+              <p class="card-text">Price: <span th:text="${game.getPrice()}"></span>$</p>
+            </div>
 
 
-<!--            <button style="margin-top: 10px" type="submit"-->
-<!--                    class="btn btn-primary">Add to Shopping List-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </td>-->
-<!--      </tr>-->
+            <button style="margin-top: 10px" type="submit"
+                    class="btn btn-primary">Add to Shopping List
+            </button>
+          </div>
+        </td>
+      </tr>
       </tbody>
     </table>
 
