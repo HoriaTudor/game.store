@@ -2,6 +2,7 @@ package com.game.store.mapper;
 
 import com.game.store.dto.UserDto;
 import com.game.store.entity.Role;
+import com.game.store.entity.ShoppingCart;
 import com.game.store.entity.User;
 import com.game.store.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class UserMapper {
         } else {
             user.setRoles(List.of(role.get()));
         }
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        user.setShoppingCart(shoppingCart);
 
         return user;
     }
