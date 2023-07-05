@@ -2,10 +2,10 @@ package com.game.store.controller;
 
 import com.game.store.dto.ChosenGameDto;
 import com.game.store.dto.GameDto;
+import com.game.store.dto.ShoppingCartDto;
+import com.game.store.dto.UserDetailsDto;
 import com.game.store.entity.Game;
-import com.game.store.service.ChosenGameService;
-import com.game.store.service.GameService;
-import com.game.store.service.GameValidator;
+import com.game.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +28,15 @@ public class GameController {
 
     @Autowired
     private ChosenGameService chosenGameService;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CustomerOrderService customerOrderService;
 
     @GetMapping("/")
     public String viewTemplate(Model model) {
@@ -93,5 +102,33 @@ public class GameController {
         chosenGameService.addToCart(chosenGameDto, gameId, email);
 
         return "redirect:/cart";
+    }
+
+    @GetMapping("/cart")
+    public String getCart(Model model) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        ShoppingCartDto shoppingCartDto = shoppingCartService.getShoppingCartByUserEmail(email);
+        model.addAttribute("shoppingCartDto", shoppingCartDto);
+
+        return "cart";
+    }
+
+    @GetMapping("/checkout")
+    public String getCheckout(Model model){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        ShoppingCartDto shoppingCartDto = shoppingCartService.getShoppingCartByUserEmail(email);
+        model.addAttribute("shoppingCartDto", shoppingCartDto);
+        UserDetailsDto userDetailsDto = userService.getUserDto(email);
+        model.addAttribute("userDetailsDto", userDetailsDto);
+
+        return "checkout";
+    }
+
+    @PostMapping("/sendOrder")
+    public String sendOrder(@ModelAttribute("userDetailsDto") UserDetailsDto userDetailsDto) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        customerOrderService.addCustomerOrder(email, userDetailsDto.getShippingAddress());
+
+        return "confirmation";
     }
 }
